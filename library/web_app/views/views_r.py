@@ -8,5 +8,17 @@ def home(request):
 def login(request):
     return render(request, 'web_app/login.html', {'title' : 'login'})
 
+def signup(request):
+    return render(request, 'web_app/signup.html', {'title' : 'signup'})
 
-# {% load static %} <img src="{% static "web_app/img/hi.jpg" %}" alt="Hi!" />
+def cart(request):
+    return render(request, 'web_app/cart.html', {'title' : 'cart'})
+
+def shop(request):
+    return render(request, 'web_app/shop.html', {'title' : 'shop'})
+
+def checkout(request):
+    return render(request, 'web_app/checkout.html', {'title' : 'checkout'})
+
+def single_product(request):
+    return render(request, 'web_app/single_product.html', {'title' : 'single_product'})
