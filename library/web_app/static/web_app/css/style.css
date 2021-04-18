@@ -1,3 +1,27 @@
+    li.dropdown {
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: rgb(150, 136, 136);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
 .center {
     text-align: center;
     }
@@ -157,7 +181,7 @@ z-index: 999;}
 
 .slider-area {clear: both}
 .slider-area, .promo-area, .brands-area, .maincontent-area, .footer-top-area, .product-widget-area, .product-breadcroumb-area, .single-product-area {position: relative;overflow: hidden}
-
+.zigzag-bottom {}
 .slide-text-wrapper {
   height: 700px;
 }
@@ -576,11 +600,8 @@ width: 10px;
 .single-product-area .zigzag-bottom {background-color: #333333}
 
 .single-product-area {
-  padding: 80px 0 130px;
+    padding: 100px 150px 100px;
 }
-
-
-
 
 
 .sidebar-title {
