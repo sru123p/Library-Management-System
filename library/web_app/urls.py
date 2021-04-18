@@ -5,6 +5,6 @@ from .views import views_m
 from .views import views_s
 
 urlpatterns = [
-    path('', views_r.home, name = 'lib-home'),
-    path('about', views_r.library, name = 'lib-about')
+    path('', views_r.home, name = 'home'),
+    path('login', views_r.login, name = 'login')
 ]

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def home(request):
-    return HttpResponse('<h1>Library</h1>')
+    return render(request, 'web_app/index.html', {'title' : 'home'})
 
-def library(request):
-    return render(request, 'web_app/home.html')
+def login(request):
+    return render(request, 'web_app/login.html', {'title' : 'login'})
