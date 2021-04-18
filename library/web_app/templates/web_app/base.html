@@ -4,8 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LMS</title>
     
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Library</title>
+    {% endif %}
+    <!-- Load static -->
+    {% load static %} 
+    
+
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
@@ -18,9 +26,12 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet"  href="{%  static  'web_app/css/style.css'  %}">
+    <link rel="stylesheet"  href="{%  static  'web_app/css/owl.carousel.css'  %}">
+    <link rel="stylesheet"  href="{%  static  'web_app/css/responsive.css'  %}">
+    <!-- <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/responsive.css"> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +46,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="logo">
-                        <h1><a href="index.html">IIT INDORE <span> Library</span></a></h1>
+                        <h1><a href="{% url 'home' %}">IIT INDORE <span> Library</span></a></h1>
                     </div>
                 </div>
                 
@@ -66,17 +77,17 @@
                 </div> 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a></li>
+                        <li class="active"><a href="{% url 'home' %}">Home</a></li>
                         <li class="dropdown"><a href="#">Books</a>
                             <div class="dropdown-content">
                                 <a href="shop.html">Category Wise</a>
                                 <a href="shop.html">Author Search</a>
                                 <a href="shop.html">Title  Search</a>
                                 <a href="shop.html">ISBN Number</a>
-                              </div>
+                            </div>
                         </li>
-                        <li><a href="cart.html">Issued Books</a></li>
-                        <li><a href="checkout.html">Favourates</a></li>
+                        <li><a href="#">Issued Books</a></li>
+                        <li><a href="#">Favourates</a></li>
                         <li><a href="#">Wishlist</a></li>
                         <li><a href="#">Fines</a></li>
                         <li><a href="#">Contact</a></li>
@@ -84,12 +95,16 @@
                 </div>  
             </div>
         </div>
-    </div> <!-- End mainmenu area -->
-
+    </div>
+    
+    <!-- End mainmenu area -->
+    
     {% block content %}
-
+    
     {% endblock %}
-
+     
+    <!-- End slider area -->
+        
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
     
@@ -97,13 +112,20 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     
     <!-- jQuery sticky menu -->
-    <script src="js/owl.carousel.min.js"></script>
+    <script src="{% static '/web_app/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static '/web_app/js/jquery.sticky.js' %}"></script>
+
+    <!-- <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.sticky.js"></script>
-    
+     -->
     <!-- jQuery easing -->
-    <script src="js/jquery.easing.1.3.min.js"></script>
+    <script src="{% static '/web_app/js/jquery.easing.1.3.min.js' %}"></script>
+
+    <!-- <script src="js/jquery.easing.1.3.min.js"></script> -->
     
     <!-- Main Script -->
-    <script src="js/main.js"></script>
+    <script src="{% static '/web_app/js/main.js' %}"></script>
+
+    <!-- <script src="js/main.js"></script> -->
   </body>
 </html>

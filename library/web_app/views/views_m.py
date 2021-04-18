@@ -6,4 +6,4 @@ def home(request):
     return HttpResponse('<h1>Library</h1>')
 
 def library(request):
-    return render(request, 'web_app/home.html')
+    return render(request, 'web_app/index.html')

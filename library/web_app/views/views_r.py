@@ -21,4 +21,4 @@ def checkout(request):
     return render(request, 'web_app/checkout.html', {'title' : 'checkout'})
 
 def single_product(request):
-    return render(request, 'web_app/single_product.html', {'title' : 'single_product'})
+    return render(request, 'web_app/single-product.html', {'title' : 'single_product'})

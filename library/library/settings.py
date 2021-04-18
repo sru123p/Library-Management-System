@@ -81,8 +81,8 @@ DATABASES = {
         'NAME': 'eurekadb',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '19285house',
+        'USER': 'ponugoti',
+        'PASSWORD': 'sruthi@123',
     }
 }
 
