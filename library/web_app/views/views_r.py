@@ -7,3 +7,6 @@ def home(request):
 
 def login(request):
     return render(request, 'web_app/login.html', {'title' : 'login'})
+
+
+# {% load static %} <img src="{% static "web_app/img/hi.jpg" %}" alt="Hi!" />
