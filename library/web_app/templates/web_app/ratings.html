@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css">
+    <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Library</title>
+    {% endif %}
+    <!-- Load static -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/web_app/css/userd.css' %}" />
+    <style>
+        .stars-outer {
+  position: relative;
+  display: inline-block;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-outer::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #ccc;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #f8ce0b;
+}
+
+    </style>
+  </head>
+  <body id="body">
+    <div class="container">
+      <nav class="navbar">
+        <div class="nav_icon" onclick="toggleSidebar()">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+        <div class="navbar__left">
+          <a href="#">My books</a>
+          <a class="active_link" href="#">{% if name %} {{name}} {% endif %}</a>
+        </div>
+        <div class="navbar__right">
+          <a href="#">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </a>
+          <a href="#">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+          </a>
+          <a href="#">
+            <!-- <img width="30" src="assets/avatar.svg" alt="" /> -->
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i> 
+          </a>
+        </div>
+      </nav>
+
+      <main>
+        <div class="main__container">
+          <!-- MAIN TITLE STARTS HERE -->
+
+          <div class="main__title">
+            <img src="assets/hello.svg" alt="" />
+            <div class="main__greeting">
+              <h1> Rate or Review your borrowed books, {% if name %} {{name}} {% endif %}</h1>
+              <br>
+            </div>
+          </div>
+
+          <!-- MAIN TITLE ENDS HERE -->
+
+          <!-- MAIN CARDS STARTS HERE -->
+          <div class="card-r">
+            <div class="card-header">
+              <img src="{% static '/web_app/img/logo2.jpg' %}" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Book name</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <button class="button" type="submit" form="form1" value="Submit">Submit Review</button>
+              
+            </div>
+            <div class="card-footer text-muted">
+              2 days ago
+            </div>
+          </div>
+          <br><br>
+          
+      </main>
+
+      <div id="sidebar">
+        <div class="sidebar__title">
+          <div class="sidebar__img">
+            <img src="{% static '/web_app/img/logo2.jpg' %}" alt="logo" />
+            <h1>Dashboard</h1>
+          </div>
+          <i onclick="closeSidebar()" class="fa fa-times" aria-hidden="true"></i>
+        </div>
+
+        <div class="sidebar__menu">
+          <div class="sidebar__link active_menu_link">
+            <i class="fa fa-home"></i>
+            <a href="{% url 'home' %}">Home</a>
+          </div>
+          <h2>PERSONAL</h2>
+          <div class="sidebar__link">
+            <i class="fas fa-book"></i>
+            <a href="#">My Bookshelf</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <a href="#">My Friends</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fa fa-comment-dots" aria-hidden="true"></i>
+            <a href="#">Pending Requests</a>
+          </div>
+          <h2>BOOKS</h2>
+          <div class="sidebar__link">
+            <i class="fas fa-star-half-alt"></i>
+            <a href="#">Rate & Review</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fas fa-book-reader"></i>
+            <a href="#">Suggestions</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fas fa-bookmark"></i>
+            <a href="#">Borrowed Books</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fas fa-hand-holding-usd"></i>
+            <a href="#">Pay dues</a>
+          </div>
+          <h2>LEAVE</h2>
+          <div class="sidebar__link">
+            <i class="fas fa-sign-out-alt"></i>
+            <a href="#">Discontinue Services</a>
+          </div>
+          <div class="sidebar__logout">
+            <i class="fa fa-power-off"></i>
+            <a href="{% url 'logout' %}">Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // Initial Ratings
+    const ratings = {
+      sony: 4.7,
+      samsung: 3.4,
+      vizio: 2.3,
+      panasonic: 3.6,
+      phillips: 4.1
+    }
+
+    // Total Stars
+    const starsTotal = 5;
+
+    // Run getRatings when DOM loads
+    document.addEventListener('DOMContentLoaded', getRatings);
+
+    // Form Elements
+    const productSelect = document.getElementById('product-select');
+    const ratingControl = document.getElementById('rating-control');
+
+    // Init product
+    let product;
+
+    // Product select change
+    productSelect.addEventListener('change', (e) => {
+      product = e.target.value;
+      // Enable rating control
+      ratingControl.disabled = false;
+      ratingControl.value = ratings[product];
+    });
+
+    // Rating control change
+    ratingControl.addEventListener('blur', (e) => {
+      const rating = e.target.value;
+
+      // Make sure 5 or under
+      if (rating > 5) {
+        alert('Please rate 1 - 5');
+        return;
+      }
+
+      // Change rating
+      ratings[product] = rating;
+
+      getRatings();
+    });
+
+    // Get ratings
+    function getRatings() {
+      for (let rating in ratings) {
+        // Get percentage
+        const starPercentage = (ratings[rating] / starsTotal) * 100;
+
+        // Round to nearest 10
+        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+        // Set width of stars-inner to percentage
+        document.querySelector(`.${rating} .stars-inner`).style.width = starPercentageRounded;
+
+        // Add number rating
+        document.querySelector(`.${rating} .number-rating`).innerHTML = ratings[rating];
+      }
+    }
+    </script>
+  </body>
+</html>

@@ -68,7 +68,8 @@ def login(request):
                     request.session['email'] = email
                     request.session['role'] = data['role']
                     url="/"
-                    return redirect(url)
+                    # return redirect(url)
+                    return render(request, 'web_app/index.html', data)
                 
                 else:
                     messages.error(request, 'incorrect password please try again!!')
@@ -179,6 +180,30 @@ def home(request):
 
 def cart(request):
     return render(request, 'web_app/cart.html', {'title' : 'cart'})
+
+def userdashboard(request):
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'Dashboard',
+                }
+    return render(request, 'web_app/userdashboard.html', data)
+
+def ratings(request):
+    return render(request, 'web_app/ratings.html', {'title' : 'ratings'})
+
 
 def category(request):
     return render(request, 'web_app/category.html', {'title' : 'category'})
