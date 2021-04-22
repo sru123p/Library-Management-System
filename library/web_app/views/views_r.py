@@ -28,6 +28,13 @@ def logout_request(request):
     messages.info(request, "Logged out successfully!")
     return redirect("/login")
 
+def logout_request_admin(request):
+    # logout(request)
+    request.session.clear()
+    request.session.flush()
+    request.session.clear_expired()
+    messages.info(request, "Logged out successfully!")
+    return redirect("/admin_login")
 
 
 def login(request):
@@ -247,7 +254,7 @@ def admin_login(request):
                     request.session['email'] = email
                     url="/"
                     # return redirect(url)
-                    return render(request, 'web_app/index.html', data)
+                    return render(request, 'web_app/admin/index', data)
                 
                 else:
                     messages.error(request, 'incorrect password please try again!!')
