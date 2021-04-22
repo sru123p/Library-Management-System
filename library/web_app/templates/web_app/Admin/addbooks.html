@@ -1,0 +1,76 @@
+{% extends "web_app/admin/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Add Books</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<!--<form action="/action_page.php">
+    <label for="cars">Choose a car:</label>
+    <select name="cars" id="cars">
+      <option value="volvo">Volvo</option>
+      <option value="saab">Saab</option>
+      <option value="opel">Opel</option>
+      <option value="audi">Audi</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+  </form>-->
+
+  <div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                 <div class="product-content-right"> 
+                     <div class="woocommerce"> 
+                     <h2 class="sidebar-title">Enter Book details:</h2> 
+                    <form action="" method="POST">
+                        {% csrf_token %} 
+                        <div class="single-sidebar">
+                            <input type="text" placeholder="Title of the Book" name="name" required>
+                            <input type="integer" placeholder="ISBN Number" name="isbn" required><br><br>
+                            <select name="catname" id="catname">
+                                {% for obj in categories_list %}
+                                <option value="{{obj}}">{{obj}}</option>
+                                {% endfor %}
+                            </select><br> <br>
+                            <input type="text" placeholder="Author-1" name="author1" required>
+                            <input type="text" placeholder="Author-2" name="author2">
+                            <input type="text" placeholder="Author-3" name="author3">
+                            <input type="integer" placeholder="No. of copies" name="copies" required>
+                            <select name="shelfid" id="shelfid">
+                                {% for obj in shelf_list %}
+                                <option value="{{obj}}">{{obj}}</option>
+                                {% endfor %}
+                            </select>
+                    </div>
+                            <!-- <input type="password" placeholder="Confirm Password" name="r_password" required> -->
+                            <div class='center'>
+                                <input type="submit" name="" value="Enter">
+                            </div>
+                    </form>
+                    <!-- {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} -->
+                    
+                                                 
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

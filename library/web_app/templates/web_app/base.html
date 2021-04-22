@@ -41,17 +41,7 @@
     <![endif]-->
   </head>
   <body>
-      <div class="site-branding-area">
-        {% for message in messages %}
-                            <div class="container-fluid p-0">
-                                <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    {{ message }}
-                                </div>
-                            </div>
-        {% endfor %}
+    <div class="site-branding-area">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -65,7 +55,7 @@
                         <li class="dropdown dropdown-small">
                             <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key"><i class="fa fa-user"></i> sruthi.p </span><b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url 'logout' %}">Log Out</a></li>
+                                <li><a href="#">Log Out</a></li>
                             </ul>
                         </li>
                     </div>

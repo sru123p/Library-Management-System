@@ -1,0 +1,21 @@
+{% extends "web_app/admin/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Sorry!!</h2>
+                    <h3>{{ d }}</h3>
+                    {% if f %}
+                    <h3>Your fine : {{ f  }}</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+
+{% endblock content %}

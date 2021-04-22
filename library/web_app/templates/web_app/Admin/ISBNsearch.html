@@ -1,0 +1,26 @@
+{% extends "web_app/admin/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Search Books</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<div class="center">
+    <h2 class="sidebar-title">Enter ISBN number</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="isbn" size="50" placeholder="ISBN number of book...">
+        <input type="submit" padding='3x' value="Submit">
+    </form>
+</div>
+
+{% endblock content %}

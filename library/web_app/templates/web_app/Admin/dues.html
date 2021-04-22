@@ -1,0 +1,25 @@
+{% extends "web_app/admin/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Due on Book</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<div class="center">
+    <h2 class="sidebar-title">your total due amount is : Rs.{{fine}}</h2>
+    <h2 class="sidebar-title">You are {{days}} days late</h2>                                          
+    <form action="" class="cart">
+        <button class="add_to_cart_button" type="submit">Pay Now</button>
+    </form>  
+</div>
+
+{% endblock content %}

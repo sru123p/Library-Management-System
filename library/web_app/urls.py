@@ -7,13 +7,19 @@ from .views import views_s
 urlpatterns = [
     path('', views_r.home, name = 'home'),
     path('login', views_r.login, name = 'login'),
-    path('logout', views_r.logout_request, name = 'logout'),
     path('cart', views_r.cart, name = 'cart'),
     path('signup', views_r.signup, name = 'signup'),
     path('category', views_r.category, name = 'category'),
     path('checkout', views_r.checkout, name = 'checkout'),
     path('single_book', views_r.single_book, name = 'single_book'),
-    path('otp_verification', views_r.otp_verification, name = 'otp_verification'),
-    
-    
+    path('admin_home', views_s.admin_home, name='admin_home'),
+    path('categories_search', views_s.categories_search, name='categories_search'),
+    path('singlebook/<isbnnumber>/<author>/<category>', views_s.singlebook, name = 'singlebook'),
+    path('issuebook', views_s.issuebook, name='issuebook'),
+    path('returnbook', views_s.returnbook, name='returnbook'),
+    path('paydues/<request>/<dueid>/<isbn>/<userid>/<copyno>',views_s.paydues ,name = 'paydues'),
+    path('addbook', views_s.addbook, name='addbook'),
+    path('isbnsearch', views_s.isbnsearch, name='isbnsearch'),
+    path('changeshelves', views_s.changeshelves, name='changeshelves'),
+    path('deletebook', views_s.deletebook, name='deletebook'),
 ]

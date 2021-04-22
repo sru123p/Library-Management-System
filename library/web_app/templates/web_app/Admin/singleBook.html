@@ -1,0 +1,94 @@
+{% extends "web_app/admin/base.html" %}
+{% load static %}
+    
+{% block content %}
+
+    
+    <div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        {%for bk in b%}
+                        <h2> {{bk.title}}</h2>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="product-images">
+                                    <div class="product-main-img">
+                                        <img src="{%  static  'web_app/img/product-3.jpeg'  %}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <div class="product-inner">
+                                    {%for bk in b%}
+                                    <h2 class="product-name">{{bk.title}}</h2>
+                                    <div class="product-inner-price">                                                                        
+                                            <ins>Category: </ins>
+                                            <p>
+                                                {{category}}
+                                        </p>
+                                        <ins>Authors: </ins> 
+                                        <p>
+                                            {% for auth in authors %}
+                                            {% for a in auth %}
+                                                {{a}}
+                                            {% endfor %}   
+                                            {% endfor %}
+                                     </p>
+                                     <ins>No. of copies:</ins> 
+                                            <p>
+                                                {{bk.count}}
+                                        </p>
+                                        <ins>Shelf_No.:</ins> 
+                                            <p>
+                                                {{bk.shelfID}}
+                                        </p>
+                                    </div>    
+                                    {% endfor %}
+                                                                                                                                                     
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                                <h2>Product Description</h2>  
+                                                <p>Perfect book to make your concepts clear</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">                                           
+                                        <form action= {% url 'changeshelves' isbn = bk.ISBN %} class="cart" method="GET">
+                                            {% csrf_token %}
+                                        <button class="add_to_cart_button" type="submit">Change Shelf</button>
+                                    </form>  
+                                </div>
+                                    <div class="col-sm-6">
+                                        <form action={% url 'deletebook' isbn = bk.ISBN %} class="cart" method="GET">
+                                            {% csrf_token %}
+                                        <button class="add_to_cart_button" type="submit">Delete Book</button>
+                                    </form> 
+                                </div>
+                                </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock %}

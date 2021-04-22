@@ -1,4 +1,5 @@
-    li.dropdown {
+
+  li.dropdown {
     display: inline-block;
   }
   
@@ -625,11 +626,10 @@ input[type="submit"], button[type=submit] {
     text-transform: uppercase;
 }
 input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
-.single-sidebar input[type="text"],.single-sidebar input[type="password"] {
+.single-sidebar input[type="text"] {
     margin-bottom: 10px;
     width: 100%;
 }
-
 .thubmnail-recent {
     margin-bottom: 30px;
     overflow: hidden;
