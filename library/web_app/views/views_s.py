@@ -92,7 +92,7 @@ def categories_search(request):
             cursor.execute("SELECT ISBNnumber, title, publication_year, count(*) FROM books where ISBNnumber = %s AND present=%s GROUP BY ISBNnumber", (isbn,"yes"))
             books = cursor.fetchall()
             cursor = connection.cursor()
-            cursor.execute("SELECT authorName FROM book_authors where bookID", [isbn])
+            cursor.execute("SELECT authorName FROM book_authors where bookID = %s", [isbn])
             authors = cursor.fetchall()
             author = []
             a = cursor.rowcount
@@ -248,7 +248,7 @@ def returnbook(request):
             }
             cursor.execute("UPDATE borrowed_books SET status='returned' where ISBN_book = %s AND copy_num = %s AND id_user = %s", (isbn, copyno, userid[0]))
             return render(request, 'web_app/admin/success.html', data)
-    return render(request, 'web_app/admin/returnbook.html', data)
+    return render(request, 'web_app/admin/returnbook.html')
 
 
 def paydues(request, dueid, isbn, userid, copyno):
@@ -319,6 +319,8 @@ def isbnsearch(request):
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM books where ISBNNumber = %s AND present=%s""",(int(isbn), "yes"))
         a =cursor.rowcount
+        if(a==0):
+            return render(request, 'web_app/admin/nobook.html')
         books = cursor.fetchone()
         cursor.execute("""SELECT Category_name FROM category where bookISBN = %s""",[int(isbn)])
         cat = cursor.fetchall()
@@ -330,7 +332,7 @@ def isbnsearch(request):
                 'shelfID':books[4],
                 'count':a,
         })
-        cursor.execute("SELECT authorName FROM book_authors where bookID", [int(isbn)])
+        cursor.execute("SELECT authorName FROM book_authors where bookID = %s", [int(isbn)])
         author = cursor.fetchall()
         authors = []
         m = cursor.rowcount

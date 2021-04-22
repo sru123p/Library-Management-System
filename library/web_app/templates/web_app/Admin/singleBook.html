@@ -59,9 +59,7 @@
                                             <p>
                                                 {{bk.shelfID}}
                                         </p>
-                                    </div>    
-                                    {% endfor %}
-                                                                                                                                                     
+                                    </div>                                                                                                           
                                         <div class="tab-content">
                                             <div role="tabpanel" class="tab-pane fade in active" id="home">
                                                 <h2>Product Description</h2>  
@@ -70,13 +68,13 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">                                           
-                                        <form action= {% url 'changeshelves' isbn = bk.ISBN %} class="cart" method="GET">
+                                        <form action= {% url 'changeshelves' %} class="cart" method="GET">
                                             {% csrf_token %}
                                         <button class="add_to_cart_button" type="submit">Change Shelf</button>
                                     </form>  
                                 </div>
                                     <div class="col-sm-6">
-                                        <form action={% url 'deletebook' isbn = bk.ISBN %} class="cart" method="GET">
+                                        <form action={% url 'deletebook' isbn=bk.ISBN %} class="cart" method="GET">
                                             {% csrf_token %}
                                         <button class="add_to_cart_button" type="submit">Delete Book</button>
                                     </form> 
