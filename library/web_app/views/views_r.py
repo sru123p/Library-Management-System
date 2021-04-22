@@ -258,10 +258,43 @@ def ratings(request):
         return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
-    data = {
-                'name': request.session.get('name', 'Guest'),
-                'title' : 'ratings',
-            }
-    return render(request, 'web_app/ratings.html', data)
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'Ratings',
+                }
+            cur = connection.cursor()
+            cur.execute("""SELECT * FROM borrowed_books WHERE id_user= %s""", [userID])
+            books = cur.fetchall()
+            if request.method == "POST":
+                rating = request.POST.get('rating')
+                cursor1 = connection.cursor()
+                book_ID = books[0][0]
+                cursor1.execute("""SELECT * FROM ratings WHERE user_ID = %s AND book_ID= %s""",[userID,book_ID])
+                if cursor1.rowcount ==0:
+                    cursor1.execute("""INSERT INTO ratings(user_ID,book_ID,rating) VALUES (%s, %s, %s)""",[userIDbook_ID,rating])
+                else:
+                    cursor1.execute("""UPDATE ratings SET rating = %s  WHEREuser_ID = %s AND book_ID= %d""",[rating,userID,book_ID])
+    return render(request, 'web_app/ratings.html',{'books' : books, 'title' : 'Ratings','userId': row[0][0],'name': row[0][1]})
+
+def friends(request):
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT name2,accepted FROM friends WHERE f1ID= %s""", [userID])
+        friend = cursor.fetchall()
+    return render(request, 'web_app/friends.html', {'friend': friend, 'title' : 'myfriends'})
 
 

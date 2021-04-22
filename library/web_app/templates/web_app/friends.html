@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css">
+    <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Library</title>
+    {% endif %}
+    <!-- Load static -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/web_app/css/userd.css' %}" />
+    
+  </head>
+  <body id="body">
+    <div class="container">
+      <nav class="navbar">
+        <div class="nav_icon" onclick="toggleSidebar()">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </div>
+        <div class="navbar__left">
+          <a href="#">My books</a>
+          <a class="active_link" href="#">{% if name %} {{name}} {% endif %}</a>
+        </div>
+        <div class="navbar__right">
+          <a href="#">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </a>
+          <a href="#">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+          </a>
+          <a href="#">
+            <!-- <img width="30" src="assets/avatar.svg" alt="" /> -->
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i> 
+          </a>
+        </div>
+      </nav>
+
+      <main>
+        <div class="main__container">
+          <!-- MAIN TITLE STARTS HERE -->
+
+          <div class="main__title">
+            <img src="assets/hello.svg" alt="" />
+            <div class="main__greeting">
+              <h1>Hello {% if name %} {{name}} {% endif %}</h1>
+              <p>Welcome to your dashboard</p>
+            </div>
+          </div>
+
+          <!-- MAIN TITLE ENDS HERE -->
+          <table style="width:100%">
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+            </tr>
+            {% for i in friend %}
+            <tr>
+              <td>{{i.0}}</td>
+              <td>{{i.1}}</td>
+            </tr>
+            {%endfor%} 
+          </table>
+          
+          
+          </main>
+    
+          <div id="sidebar">
+            <div class="sidebar__title">
+              <div class="sidebar__img">
+                <img src="{% static '/web_app/img/logo2.jpg' %}" alt="logo" />
+                <h1>Dashboard</h1>
+              </div>
+              <i onclick="closeSidebar()" class="fa fa-times" aria-hidden="true"></i>
+            </div>
+    
+            <div class="sidebar__menu">
+              <div class="sidebar__link active_menu_link">
+                <i class="fa fa-home"></i>
+                <a href="{% url 'home' %}">Home</a>
+              </div>
+              <h2>PERSONAL</h2>
+              <div class="sidebar__link">
+                <i class="fas fa-book"></i>
+                <a href="#">My Bookshelf</a>
+              </div>
+              <div class="sidebar__link">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <a href="#">My Friends</a>
+              </div>
+              <div class="sidebar__link">
+                <i class="fa fa-comment-dots" aria-hidden="true"></i>
+                <a href="#">Pending Requests</a>
+              </div>
+              <h2>BOOKS</h2>
+              <div class="sidebar__link">
+                <i class="fas fa-star-half-alt"></i>
+                <a href="{% url 'ratings' %}">Rate & Review</a>
+              </div>
+              <div class="sidebar__link">
+                <i class="fas fa-book-reader"></i>
+                <a href="#">Suggestions</a>
+              </div>
+              <div class="sidebar__link">
+                <i class="fas fa-bookmark"></i>
+                <a href="#">Borrowed Books</a>
+              </div>
+              <div class="sidebar__link">
+                <i class="fas fa-hand-holding-usd"></i>
+                <a href="#">Pay dues</a>
+              </div>
+              <h2>LEAVE</h2>
+              <div class="sidebar__link">
+                <i class="fas fa-sign-out-alt"></i>
+                <a href="#">Discontinue Services</a>
+              </div>
+              <div class="sidebar__logout">
+                <i class="fa fa-power-off"></i>
+                <a href="{% url 'logout' %}">Log out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          
+  </body>
+</html>
