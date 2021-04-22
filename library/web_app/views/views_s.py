@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db import connection
+from django.utils.crypto import get_random_string
 from datetime import date
 from datetime import timedelta
+import bcrypt
 # Create your views here.
 
 
@@ -66,8 +70,8 @@ def admin_login(request):
 
 
 def admin_home(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }
@@ -75,8 +79,8 @@ def admin_home(request):
 
 
 def categories_search(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     if request.method == "POST":
         catname = request.POST.get("catname")
         cursor = connection.cursor()
@@ -123,8 +127,8 @@ def categories_search(request):
 
 
 def singlebook(request, isbnnumber, author, category):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     cursor = connection.cursor()
     cursor.execute("SELECT ISBNnumber, title, publication_year, count(*) FROM books where ISBNnumber = %s GROUP BY ISBNnumber", [isbnnumber])
     books = cursor.fetchall()
@@ -146,8 +150,8 @@ def singlebook(request, isbnnumber, author, category):
 
 
 def issuebook(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }
@@ -203,8 +207,8 @@ def issuebook(request):
 
 
 def returnbook(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     if request.method == "POST":
         email = request.POST.get("email")
         isbn = request.POST.get("isbn")
@@ -248,8 +252,8 @@ def returnbook(request):
 
 
 def paydues(request, dueid, isbn, userid, copyno):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }
@@ -261,8 +265,8 @@ def paydues(request, dueid, isbn, userid, copyno):
 
 
 def addbook(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     cursor = connection.cursor()
     cursor.execute("""SELECT DISTINCT Category_name FROM category order by Category_name""")
     categories = cursor.fetchall()
@@ -305,8 +309,8 @@ def addbook(request):
     return render(request, 'web_app/admin/addbooks.html', cat)
 
 def isbnsearch(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }
@@ -343,8 +347,8 @@ def isbnsearch(request):
 
 
 def changeshelves(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }
@@ -352,8 +356,8 @@ def changeshelves(request):
 
 
 def deletebook(request, isbn):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login_admin")
+    if request.session.get('loggedinLib', False) == False:
+        return redirect("admin_login")
     data = {
         'name': request.session.get('name', 'Guest'),
     }

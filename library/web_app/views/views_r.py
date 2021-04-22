@@ -5,7 +5,7 @@ from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.crypto import get_random_string
-from passlib.hash import sha256_crypt
+
 
 # Create your views here.
 
