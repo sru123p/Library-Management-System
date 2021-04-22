@@ -53,7 +53,7 @@
                 <div class="col-sm-6">
                     <div class="shopping-item">
                         <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key"><i class="fa fa-user"></i> sruthi.p </span><b class="caret"></b></a>
+                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key"><i class="fa fa-user"></i> {% if name %}{{ name }}{% endif %}</span><b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Log Out</a></li>
                             </ul>
@@ -80,15 +80,15 @@
                         <li class="active"><a href="{% url 'home' %}">Home</a></li>
                         <li class="dropdown"><a href="#">Books</a>
                             <div class="dropdown-content">
-                                <a href="{% url 'category' %}">Category Wise</a>
-                                <a href="{% url 'category' %}">Author Search</a>
+                                
+                                <a href="{% url 'userdashboard' %}">Author Search</a>
                                 <a href="{% url 'category' %}">Title  Search</a>
-                                <a href="{% url 'category' %}">ISBN Number</a>
+                                
                             </div>
                         </li>
                         <li><a href="{% url 'category' %}">Issued Books</a></li>
-                        <li><a href="{% url 'login' %}">Favourates</a></li>
-                        <li><a href="{% url 'signup' %}">Wishlist</a></li>
+                        <li><a href="{% url 'login' %}">Favourites</a></li>
+                        <li><a href="{% url 'signup' %}">Withdraw books</a></li>
                         <li><a href="{% url 'checkout' %}">Fines</a></li>
                         <li><a href="{% url 'single_book' %}">Contact</a></li>
                     </ul>

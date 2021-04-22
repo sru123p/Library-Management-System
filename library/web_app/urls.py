@@ -5,8 +5,11 @@ from .views import views_m
 from .views import views_s
 
 urlpatterns = [
-    path('', views_r.home, name = 'home'),
+     path('', views_r.home, name = 'home'),
     path('login', views_r.login, name = 'login'),
+    path('logout', views_r.logout_request, name = 'logout'),
+    path('userdashboard', views_r.userdashboard, name = 'userdashboard'),
+    path('ratings', views_r.ratings, name = 'ratings'),
     path('cart', views_r.cart, name = 'cart'),
     path('signup', views_r.signup, name = 'signup'),
     path('category', views_r.category, name = 'category'),
