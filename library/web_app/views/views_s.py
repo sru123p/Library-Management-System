@@ -21,6 +21,8 @@ def logout_request_admin(request):
 
 
 def admin_login(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     LibrarianID = request.session.get('LibrarianId', 'none')
     if LibrarianID == 'none':
         request.session.flush()
@@ -70,6 +72,8 @@ def admin_login(request):
 
 
 def admin_home(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {
@@ -79,6 +83,8 @@ def admin_home(request):
 
 
 def categories_search(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     if request.method == "POST":
@@ -127,6 +133,8 @@ def categories_search(request):
 
 
 def singlebook(request, isbnnumber, author, category):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     cursor = connection.cursor()
@@ -150,6 +158,8 @@ def singlebook(request, isbnnumber, author, category):
 
 
 def issuebook(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {
@@ -207,6 +217,8 @@ def issuebook(request):
 
 
 def returnbook(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     if request.method == "POST":
@@ -252,6 +264,8 @@ def returnbook(request):
 
 
 def paydues(request, dueid, isbn, userid, copyno):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {
@@ -265,6 +279,8 @@ def paydues(request, dueid, isbn, userid, copyno):
 
 
 def addbook(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     cursor = connection.cursor()
@@ -308,7 +324,10 @@ def addbook(request):
         return render(request, 'web_app/admin/success.html')
     return render(request, 'web_app/admin/addbooks.html', cat)
 
+
 def isbnsearch(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {
@@ -347,6 +366,8 @@ def isbnsearch(request):
 
 
 def changeshelves(request):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {
@@ -356,6 +377,8 @@ def changeshelves(request):
 
 
 def deletebook(request, isbn):
+    if request.session.get('loggedinUser', False) == True:
+        return redirect('/')
     if request.session.get('loggedinLib', False) == False:
         return redirect("admin_login")
     data = {

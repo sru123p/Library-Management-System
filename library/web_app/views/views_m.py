@@ -18,6 +18,8 @@ import smtplib
 # Create your views here.
 
 def titcategory(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -26,6 +28,8 @@ def titcategory(request):
     return render(request, 'web_app/titcategory.html', data)
 
 def titlesearch(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     if request.method=='GET':
@@ -55,6 +59,8 @@ def titlesearch(request):
         return render(request,'web_app/titlesearch.html',data)
 
 def authcategory(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -63,6 +69,8 @@ def authcategory(request):
     return render(request, 'web_app/authcategory.html', data)
     
 def authsearch(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -95,6 +103,8 @@ def authsearch(request):
         return render(request,'web_app/authsearch.html',data)  
 
 def single_book(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -129,6 +139,8 @@ def single_book(request):
         return render(request,'web_app/single_book.html',data)  
 
 def favorites(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -137,6 +149,8 @@ def favorites(request):
     return render(request,'web_app/favorites.html', data)  
 
 def cont(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -145,6 +159,8 @@ def cont(request):
     return render(request,'web_app/cont.html', data) 
 
 def issuedbooks(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -153,6 +169,8 @@ def issuedbooks(request):
     return render(request,'web_app/issuedbooks.html', data)    
 
 def fines(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -161,6 +179,8 @@ def fines(request):
     return render(request,'web_app/fines.html', data)   
 
 def single_bookm(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -169,6 +189,8 @@ def single_bookm(request):
     return render(request,'web_app/single_bookm.html', data)
 
 def isslist(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -203,6 +225,8 @@ def isslist(request):
         return render(request,'web_app/isslist.html',data)  
 
 def fineslist(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -235,6 +259,8 @@ def fineslist(request):
         return render(request,'web_app/fineslist.html',data)  
 
 def payingfine(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -243,6 +269,8 @@ def payingfine(request):
     return render(request,'web_app/payingfine.html', data)
 
 def clearfine(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -255,6 +283,8 @@ def clearfine(request):
         return render(request,'web_app/success.html', data) 
 
 def hold(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -263,6 +293,8 @@ def hold(request):
     return render(request,'web_app/hold.html', data)  
 
 def log(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -271,6 +303,8 @@ def log(request):
     return render(request, 'log.html', data)          
 
 def holdfill(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {

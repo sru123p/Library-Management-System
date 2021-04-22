@@ -3,8 +3,14 @@ from .views import views_r
 from .views import views_a
 from .views import views_m
 from .views import views_s
+from django.conf.urls import (
+handler404
+)
+
+# handler404 = 'web_app.views_r.home'
 
 urlpatterns = [
+    
     path('', views_r.home, name = 'home'),
     path('login', views_r.login, name = 'login'),
     path('admin_login', views_s.admin_login, name = 'admin_login'),
@@ -12,11 +18,7 @@ urlpatterns = [
     path('admin_logout', views_s.logout_request_admin, name = 'admin_logout'),
     path('userdashboard', views_r.userdashboard, name = 'userdashboard'),
     path('ratings', views_r.ratings, name = 'ratings'),
-    path('cart', views_r.cart, name = 'cart'),
     path('signup', views_r.signup, name = 'signup'),
-    path('category', views_r.category, name = 'category'),
-    path('checkout', views_r.checkout, name = 'checkout'),
-    path('single_book', views_r.single_book, name = 'single_book'),
     path('admin_home', views_s.admin_home, name='admin_home'),
     path('categories_search', views_s.categories_search, name='categories_search'),
     path('singlebook/<isbnnumber>/<author>/<category>', views_s.singlebook, name = 'singlebook'),
@@ -27,7 +29,6 @@ urlpatterns = [
     path('isbnsearch', views_s.isbnsearch, name='isbnsearch'),
     path('changeshelves', views_s.changeshelves, name='changeshelves'),
     path('deletebook', views_s.deletebook, name='deletebook'),
-    path('single_book', views_r.single_book, name = 'single_book'),
     path('otp_verification', views_r.otp_verification, name = 'otp_verification'),
     path('resend_OTP', views_r.resend_OTP, name = 'resend_OTP'),
     path('titcategory',views_m.titcategory,name = 'titcategory'),
@@ -46,5 +47,5 @@ urlpatterns = [
     path('clearfine',views_m.clearfine,name = 'clearfine'),
     path('hold',views_m.hold,name = 'hold'),
     path('holdfill',views_m.holdfill,name = 'holdfill'),
-    path('log',views_m.log,name = 'log',)
+    path('log',views_m.log,name = 'log',),
 ]

@@ -39,6 +39,8 @@ def resend_OTP(request):
 
 
 def otp_verification(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     userID = request.session.get('userId', 'none')
     if userID == 'none':
         if request.method =='POST':
@@ -75,6 +77,8 @@ def otp_verification(request):
 
 
 def signup(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     userID = request.session.get('userId', 'none')
     if userID == 'none':
         if request.method == "POST":
@@ -121,6 +125,8 @@ def signup(request):
 
 
 def login(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     userID = request.session.get('userId', 'none')
     if userID == 'none':
         request.session.flush()
@@ -171,6 +177,8 @@ def login(request):
 
     
 def home(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -180,13 +188,10 @@ def home(request):
     return render(request, 'web_app/index.html', data )
 
 
-def cart(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login")
-    return render(request, 'web_app/cart.html', {'title' : 'cart'})
-
 
 def userdashboard(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     userID = request.session.get('userId', 'none')
@@ -209,6 +214,8 @@ def userdashboard(request):
     return render(request, 'web_app/userdashboard.html', data)
 
 def ratings(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
     if request.session.get('loggedinUser', False) == False:
         return redirect("login")
     data = {
@@ -216,35 +223,5 @@ def ratings(request):
                 'title' : 'ratings',
             }
     return render(request, 'web_app/ratings.html', data)
-
-
-def category(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login")
-    data = {
-                'name': request.session.get('name', 'Guest'),
-                'title' : 'category',
-            }
-    return render(request, 'web_app/category.html', data)
-
-def checkout(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login")
-    data = {
-                'name': request.session.get('name', 'Guest'),
-                'title' : 'checkout',
-            }
-    return render(request, 'web_app/checkout.html', data)
-
-def single_book(request):
-    if request.session.get('loggedinUser', False) == False:
-        return redirect("login")
-    data = {
-                'name': request.session.get('name', 'Guest'),
-                'title' : 'single book',
-            }
-    return render(request, 'web_app/single_book.html', data)
-
-
 
 
