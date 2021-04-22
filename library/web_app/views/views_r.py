@@ -36,7 +36,7 @@ def resend_OTP(request):
     request.session['email_link_is_active'] = True
     messages.success(request,'OTP sent to your email please check your inbox!!')
     return redirect("/otp_verification")
-    
+
 
 def otp_verification(request):
     userID = request.session.get('userId', 'none')
@@ -156,8 +156,8 @@ def login(request):
                     request.session['role'] = data['role']
                     request.session['loggedinUser'] = True
                     url="/"
-                    # return redirect(url)
-                    return render(request, 'web_app/index.html', data)
+                    return redirect(url)
+                    # return render(request, 'web_app/index.html', data)
                 
                 else:
                     messages.error(request, 'incorrect password please try again!!')

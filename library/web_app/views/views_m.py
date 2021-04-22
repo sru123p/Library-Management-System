@@ -17,16 +17,17 @@ import smtplib
 
 # Create your views here.
 
-def home(request):
-    return HttpResponse('<h1>Library</h1>')
-
-def library(request):
-    return render(request, 'web_app/index.html')
-
 def titcategory(request):
-    return render(request, 'web_app/titcategory.html')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request, 'web_app/titcategory.html', data)
 
 def titlesearch(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
     if request.method=='GET':
         val = request.GET["title"]
         cursor = connection.cursor()
@@ -54,9 +55,19 @@ def titlesearch(request):
         return render(request,'web_app/titlesearch.html',data)
 
 def authcategory(request):
-    return render(request, 'web_app/authcategory.html')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request, 'web_app/authcategory.html', data)
     
 def authsearch(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
     if request.method=='GET':
         val = request.GET["auth"]
         cursor = connection.cursor()
@@ -78,12 +89,18 @@ def authsearch(request):
                  })
              data = {
                 'books':books,
+                'name': request.session.get('name', 'Guest'),
             
              }
         return render(request,'web_app/authsearch.html',data)  
 
 def single_book(request):
-     if request.method=='GET':
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    if request.method=='GET':
         value = request.GET["bookauth"]
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM books where  title= %s""", [value])
@@ -91,7 +108,8 @@ def single_book(request):
         row = cursor.fetchall()
         books=[]
         data={
-            'books':None
+            'books':None,
+            'name': request.session.get('name', 'Guest'),
         }
         a = cursor.rowcount
         if a!=0:
@@ -106,26 +124,56 @@ def single_book(request):
 
              data = {
                 'books':books,
-            
+                'name': request.session.get('name', 'Guest'),
              }
         return render(request,'web_app/single_book.html',data)  
 
 def favorites(request):
-    return render(request,'web_app/favorites.html')  
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/favorites.html', data)  
 
 def cont(request):
-    return render(request,'web_app/cont.html') 
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/cont.html', data) 
 
 def issuedbooks(request):
-    return render(request,'web_app/issuedbooks.html')    
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/issuedbooks.html', data)    
 
 def fines(request):
-    return render(request,'web_app/fines.html')   
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/fines.html', data)   
 
 def single_bookm(request):
-    return render(request,'web_app/single_bookm.html')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/single_bookm.html', data)
 
 def isslist(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
     if request.method=='GET':
         issid = request.GET["iss"]
         cursor = connection.cursor()
@@ -134,7 +182,8 @@ def isslist(request):
         row = cursor.fetchall()
         books=[]
         data={
-            'books':None
+            'books':None,
+            'name': request.session.get('name', 'Guest'),
         }
         a = cursor.rowcount
         if a!=0:
@@ -148,11 +197,17 @@ def isslist(request):
 
              data = {
                 'books':books,
-            
+                'name': request.session.get('name', 'Guest'),
+    
              }
         return render(request,'web_app/isslist.html',data)  
 
 def fineslist(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
     if request.method=='GET':
         fineid = request.GET["fine"]
         cursor = connection.cursor()
@@ -161,7 +216,8 @@ def fineslist(request):
         row = cursor.fetchall()
         books=[]
         data={
-            'books':None
+            'books':None,
+            'name': request.session.get('name', 'Guest'),
         }
         a = cursor.rowcount
         if a!=0:
@@ -179,23 +235,48 @@ def fineslist(request):
         return render(request,'web_app/fineslist.html',data)  
 
 def payingfine(request):
-    return render(request,'web_app/payingfine.html')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/payingfine.html', data)
 
 def clearfine(request):
-     if request.method=='GET':
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    if request.method=='GET':
         did = request.GET["uid"]
         cursor = connection.cursor()
         cursor.execute("""update dues SET fine_amount='0' WHERE due_ID=%s""", [did])
-        return render(request,'web_app/success.html') 
+        return render(request,'web_app/success.html', data) 
 
 def hold(request):
-    return render(request,'web_app/hold.html')  
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request,'web_app/hold.html', data)  
 
 def log(request):
-    return render(request, 'log.html')          
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    return render(request, 'log.html', data)          
 
 def holdfill(request):
-     if request.method=='GET':
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+        'name': request.session.get('name', 'Guest'),
+    }
+    if request.method=='GET':
         usid = request.GET['usid']
         boid = request.GET['boid']
         conu = request.GET["conu"]
@@ -210,4 +291,4 @@ def holdfill(request):
           cursor.execute("""INSERT INTO borrowed_books(ISBN_book,copy_num,id_user,issued_date,due_id,status,role) VALUES (%s,%s,%s,%s,%s,%s,%s)""",(boid,conu,usid,now,duei[0]+1,'on hold',rol))      
         finally:
             cursor.close()
-        return render(request,'web_app/success.html')     
+        return render(request,'web_app/success.html', data)     
