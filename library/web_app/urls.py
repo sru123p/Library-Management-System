@@ -29,7 +29,6 @@ urlpatterns = [
     path('isbnsearch', views_s.isbnsearch, name='isbnsearch'),
     path('changeshelves', views_s.changeshelves, name='changeshelves'),
     path('deletebook/<isbn>', views_s.deletebook, name='deletebook'),
-    path('single_book', views_r.single_book, name = 'single_book'),
     path('otp_verification', views_r.otp_verification, name = 'otp_verification'),
     path('resend_OTP', views_r.resend_OTP, name = 'resend_OTP'),
     path('titcategory',views_m.titcategory,name = 'titcategory'),

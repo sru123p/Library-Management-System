@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'library.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'library_management',
+        'NAME': 'lms',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'USER': 'ponugoti',
-        'PASSWORD': 'sruthi@123',
+        'USER': 'root',
+        'PASSWORD': '19285house',
     }
 }
 
