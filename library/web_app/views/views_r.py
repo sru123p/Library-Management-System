@@ -10,6 +10,46 @@ from django.utils.crypto import get_random_string
 # Create your views here.
 
 
+def email_all(request):
+    cursor = connection.cursor()
+    cursor.execute("""select id_user, copy_num from borrowed_books where issued_date  <= NOW() - INTERVAL 15 DAY and status = 'borrowed'""",)
+    print(cursor.rowcount)
+    row = cursor.fetchall()
+    a = cursor.rowcount
+    userId = 1
+    BookID = 0
+    cursor.execute("""SELECT * FROM users WHERE userID= %s""", [userId])
+    row1 = cursor.fetchall()
+    email = row1[0][2]
+    userName = row1[0][1]
+    send_mail(
+                subject='Remainder mail from IIT indore Library to user[{}]'.format(userId),
+                message='click on the below link to Verify your email.',
+                from_email='cse19000101051@iiti.ac.in',
+                recipient_list=[email],
+                fail_silently=True,
+                html_message="Dear user you have not returned your book of ISBN Number #{} it has been more than 15 days.".format(BookID)
+                )
+    if a!=0:
+            for i in range(a):
+                userId = row[i][2]
+                BookID = row[i][0]
+
+                cursor.execute("""SELECT * FROM users WHERE userID= %s""", [userId])
+                row = cursor.fetchall()
+                email = row1[0][2]
+                userName = row1[0][1]
+                send_mail(
+                subject='Remainder mail from IIT indore Library to #{} '.format(userId),
+                message='click on the below link to Verify your email.',
+                from_email='cse19000101051@iiti.ac.in',
+                recipient_list=[email],
+                fail_silently=True,
+                html_message="Dear user you have not returned your book of ISBN Number #{} it has been more than 15 days.".format(BookID)
+                )
+    return redirect('/admin_home')
+    
+
 def logout_request(request):
     # logout(request)
     request.session.clear()

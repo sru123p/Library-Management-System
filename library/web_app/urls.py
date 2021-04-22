@@ -48,4 +48,5 @@ urlpatterns = [
     path('hold',views_m.hold,name = 'hold'),
     path('holdfill',views_m.holdfill,name = 'holdfill'),
     path('log',views_m.log,name = 'log',),
+    path('email_all', views_r.email_all, name = 'email_all')
 ]
