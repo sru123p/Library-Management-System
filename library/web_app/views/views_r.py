@@ -47,6 +47,7 @@ def email_all(request):
                 fail_silently=True,
                 html_message="Dear user you have not returned your book of ISBN Number #{} it has been more than 15 days.".format(BookID)
                 )
+    messages.success(request, "Email sent Successfully!")
     return redirect('/admin_home')
     
 
