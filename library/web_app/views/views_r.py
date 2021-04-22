@@ -10,16 +10,6 @@ from passlib.hash import sha256_crypt
 # Create your views here.
 
 
-# data = {
-# 'userId': row[0][0],
-# 'name': row[0][1],
-# 'email': row[0][2],
-# 'password': row[0][3],
-# 'address': row[0][4],
-# 'role':row[0][5]
-# }
-
-
 def logout_request(request):
     # logout(request)
     request.session.clear()
@@ -28,64 +18,42 @@ def logout_request(request):
     messages.info(request, "Logged out successfully!")
     return redirect("/login")
 
-def logout_request_admin(request):
-    # logout(request)
-    request.session.clear()
-    request.session.flush()
-    request.session.clear_expired()
-    messages.info(request, "Logged out successfully!")
-    return redirect("/admin_login")
 
 
-def login(request):
+def otp_verification(request):
     userID = request.session.get('userId', 'none')
     if userID == 'none':
-        request.session.flush()
-        request.session.clear_expired()
-        data = {
-                'title' : 'login'
-        }
-
-        if request.method == "POST":
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-
+        if request.method =='POST':
+            otp = request.POST.get('otp')
             cursor = connection.cursor()
-            cursor.execute("""SELECT * FROM users WHERE email= %s""", [email])
-            row = cursor.fetchall()
-            if cursor.rowcount == 1:
-                dbpassword = row[0][3]
-                userId = row[0][0]
-                data = {
-                'userId': row[0][0],
-                'name': row[0][1],
-                'email': row[0][2],
-                'password': row[0][3],
-                'address': row[0][4],
-                'role':row[0][5],
-                'title' : 'login'
-                }
-                
-                
-                if bcrypt.checkpw(password.encode('utf8'), dbpassword.encode('utf8')):
-                    request.session['userId'] = data['userId']
-                    request.session['email'] = email
-                    request.session['role'] = data['role']
-                    url="/"
-                    # return redirect(url)
-                    return render(request, 'web_app/index.html', data)
-                
+            if request.session.get('otp')!=None:
+                otp_from_email = request.session.get('otp')
+                if otp == otp_from_email:
+                    name = request.session.get('name')
+                    email = request.session.get('email')
+                    address = request.session.get('address')
+                    password = request.session.get('password')
+                    password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt(rounds=12))
+                    userID = 1
+                    cursor.execute("""SELECT * FROM users WHERE userID = (SELECT MAX(userID) FROM users) """)
+                    if cursor.rowcount ==0:
+                        userID = 1
+                    else:
+                        row = cursor.fetchall()
+                        userID = row[0][0]+1
+                    cursor.execute("""INSERT INTO users( userID ,Name, email, password, address, role) VALUES (%s, %s, %s, %s, %s, %s)""",(userID,name, email, password, address, 'student'))
+                    messages.success(request,'verification successful!!please  login to continue')
+                    return redirect('/login')
                 else:
-                    messages.error(request, 'incorrect password please try again!!')
+                    messages.error(request,'invalid otp try again!!')
+
             else:
-                messages.error(request, 'Account does not exist with the entered credentials!! signup to create an account')
-        return render(request, 'web_app/login.html', data)
-    else:
-        url="/"
+                messages.error(request,'Signup before email verification!!')
+                return redirect('/signup')
+        return render(request, 'web_app/otp_verification.html', {'title': 'otp verification'})
+    else :
+        url = "/"
         return redirect(url)
-
-
-
 
 
 def signup(request):
@@ -134,58 +102,75 @@ def signup(request):
         return redirect(url)
 
 
-
-
-def otp_verification(request):
+def login(request):
     userID = request.session.get('userId', 'none')
     if userID == 'none':
-        if request.method =='POST':
-            otp = request.POST.get('otp')
-            cursor = connection.cursor()
-            if request.session.get('otp')!=None:
-                otp_from_email = request.session.get('otp')
-                if otp == otp_from_email:
-                    name = request.session.get('name')
-                    email = request.session.get('email')
-                    address = request.session.get('address')
-                    password = request.session.get('password')
-                    password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt(rounds=12))
-                    userID = 1
-                    cursor.execute("""SELECT * FROM users WHERE userID = (SELECT MAX(userID) FROM users) """)
-                    if cursor.rowcount ==0:
-                        userID = 1
-                    else:
-                        row = cursor.fetchall()
-                        userID = row[0][0]+1
-                    cursor.execute("""INSERT INTO users( userID ,Name, email, password, address, role) VALUES (%s, %s, %s, %s, %s, %s)""",(userID,name, email, password, address, 'student'))
-                    messages.success(request,'verification successful!!please  login to continue')
-                    return redirect('/login')
-                else:
-                    messages.error(request,'invalid otp try again!!')
+        request.session.flush()
+        request.session.clear_expired()
+        data = {
+                'title' : 'login'
+        }
 
+        if request.method == "POST":
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * FROM users WHERE email= %s""", [email])
+            row = cursor.fetchall()
+            if cursor.rowcount == 1:
+                dbpassword = row[0][3]
+                userId = row[0][0]
+                data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'login'
+                }
+                
+                if bcrypt.checkpw(password.encode('utf8'), dbpassword.encode('utf8')):
+                    request.session['userId'] = data['userId']
+                    request.session['name'] = data['name']
+                    request.session['email'] = email
+                    request.session['role'] = data['role']
+                    request.session['loggedinUser'] = True
+                    url="/"
+                    # return redirect(url)
+                    return render(request, 'web_app/index.html', data)
+                
+                else:
+                    messages.error(request, 'incorrect password please try again!!')
             else:
-                messages.error(request,'Signup before email verification!!')
-                return redirect('/signup')
-        return render(request, 'web_app/otp_verification.html', {'title': 'otp verification'})
-    else :
-        url = "/"
+                messages.error(request, 'Account does not exist with the entered credentials!! signup to create an account')
+        return render(request, 'web_app/login.html', data)
+    else:
+        url="/"
         return redirect(url)
 
 
-
-
-
+    
 def home(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
     data = {
-                'title' : 'home'
-    }
+                'name': request.session.get('name', 'Guest'),
+                'title' : 'home',
+            }
     return render(request, 'web_app/index.html', data )
 
 
 def cart(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
     return render(request, 'web_app/cart.html', {'title' : 'cart'})
 
+
 def userdashboard(request):
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
     userID = request.session.get('userId', 'none')
     if userID != 'none':
         cursor = connection.cursor()
@@ -206,62 +191,42 @@ def userdashboard(request):
     return render(request, 'web_app/userdashboard.html', data)
 
 def ratings(request):
-    return render(request, 'web_app/ratings.html', {'title' : 'ratings'})
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+                'name': request.session.get('name', 'Guest'),
+                'title' : 'ratings',
+            }
+    return render(request, 'web_app/ratings.html', data)
 
 
 def category(request):
-    return render(request, 'web_app/category.html', {'title' : 'category'})
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+                'name': request.session.get('name', 'Guest'),
+                'title' : 'category',
+            }
+    return render(request, 'web_app/category.html', data)
 
 def checkout(request):
-    return render(request, 'web_app/checkout.html', {'title' : 'checkout'})
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+                'name': request.session.get('name', 'Guest'),
+                'title' : 'checkout',
+            }
+    return render(request, 'web_app/checkout.html', data)
 
 def single_book(request):
-    return render(request, 'web_app/single_book.html', {'title' : 'single_book'})
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    data = {
+                'name': request.session.get('name', 'Guest'),
+                'title' : 'single book',
+            }
+    return render(request, 'web_app/single_book.html', data)
 
 
 
-def admin_login(request):
-    LibrarianID = request.session.get('LibrarianId', 'none')
-    if LibrarianID == 'none':
-        request.session.flush()
-        request.session.clear_expired()
-        data = {
-                'title' : 'login'
-        }
-
-        if request.method == "POST":
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-
-            cursor = connection.cursor()
-            cursor.execute("""SELECT * FROM librarians WHERE email= %s""", [email])
-            row = cursor.fetchall()
-            if cursor.rowcount == 1:
-                dbpassword = row[0][3]
-                LibrarianId = row[0][0]
-                data = {
-                'LibrarianId': row[0][0],
-                'name': row[0][1],
-                'email': row[0][2],
-                'password': row[0][3],
-                'address': row[0][4],
-                'title' : 'login'
-                }
-                
-                
-                if bcrypt.checkpw(password.encode('utf8'), dbpassword.encode('utf8')):
-                    request.session['LibrarianId'] = data['LibrarianId']
-                    request.session['email'] = email
-                    url="/"
-                    # return redirect(url)
-                    return render(request, 'web_app/admin/index', data)
-                
-                else:
-                    messages.error(request, 'incorrect password please try again!!')
-            else:
-                messages.error(request, 'Account does not exist with the entered credentials!!!')
-        return render(request, 'web_app/login.html', data)
-    else:
-        url="admin_home"
-        return redirect(url)
 
