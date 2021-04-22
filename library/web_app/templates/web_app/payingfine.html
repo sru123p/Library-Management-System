@@ -1,0 +1,26 @@
+{% extends "web_app/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="center">
+<!---- <div class="single-sidebar">-->
+    <h2 class="sidebar-title">Enter your id,book id to clear fine</h2>
+    <form  action="clearfine">
+        <input type="text" size="100" placeholder="your due ID here" name="uid" ><br>
+        <br><input type="text" size="100" placeholder="your smart card id here" ><br>
+        <br><input type="submit" padding='3x' value="Search">
+        
+    </form>
+<!----  </div>-->
+</div>
+
+
+{% endblock content %}

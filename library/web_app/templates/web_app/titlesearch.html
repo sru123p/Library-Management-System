@@ -1,0 +1,43 @@
+{% extends "web_app/base.html" %}
+    
+{% block content %}
+<body>
+<br>
+<div>
+ <table style="width:80vw;margin:auto;">
+<tr>
+</tr>
+</form>
+</table>
+</div style="float:right;">
+<div>
+ <h4 style="text-align:center">Results</h3>
+ <hr> 
+<table style="width:100vw;">
+<tr>
+
+
+  {% for book in books %}
+  <div class="books" style="background-color:white;border-radius:7px;margin:20px;padding:6px;">
+  <table>
+  <td style="padding:5px 30px;width:10vw;">
+    <form  action="single_bookm">
+      <input type="submit" padding='3x' value="book name:{{book.name}}">
+      
+     </form>
+  <h6>ISBNnumber:{{book.isbnnumber}}<br>Availability:{{book.status}}<br></h6>
+  </td>
+  </table>
+  </div>
+  {% endfor %}
+
+</div>
+</td>
+
+
+
+</tr>
+</table>
+
+
+{% endblock content %}

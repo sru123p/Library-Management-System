@@ -19,6 +19,24 @@ def logout_request(request):
     return redirect("/login")
 
 
+def resend_OTP(request):
+    email = request.session.get('email')
+    otp = get_random_string(6, allowed_chars='0123456789')
+    request.session['otp'] = otp
+                
+    send_mail(
+        subject='{} is your IIT Indore Library OTP'.format(otp),
+        message='click on the below link to Verify your email.',
+        from_email='cse19000101051@iiti.ac.in',
+        recipient_list=[email],
+        fail_silently=True,
+        html_message="<p>Please enter the below OTP to complete your verification.</p><h3>{}</h3>".format(otp)
+        )
+    
+    request.session['email_link_is_active'] = True
+    messages.success(request,'OTP sent to your email please check your inbox!!')
+    return redirect("/otp_verification")
+    
 
 def otp_verification(request):
     userID = request.session.get('userId', 'none')

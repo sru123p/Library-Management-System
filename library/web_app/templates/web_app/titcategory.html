@@ -1,0 +1,25 @@
+{% extends "web_app/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="center">
+<!---- <div class="single-sidebar">-->
+    <h2 class="sidebar-title">Search Books</h2>
+    <form  action="titlesearch">
+        <input type="text" size="100" placeholder="Search products..." name="title" >
+        <input type="submit" padding='3x' value="Search">
+        
+    </form>
+<!----  </div>-->
+</div>
+
+
+{% endblock content %}

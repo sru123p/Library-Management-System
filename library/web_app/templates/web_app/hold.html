@@ -1,0 +1,31 @@
+{% extends "web_app/base.html" %}
+    {% load static %}
+{% block content %}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="center">
+<!---- <div class="single-sidebar">-->
+    <h2 class="sidebar-title">Enter required credentials to hold book</h2>
+    <form  action="holdfill">
+        <input type="text" size="100" placeholder="your id here" name="usid" >
+        <input type="submit" padding='3x' value="your userID"><br><br>
+        <input type="text" size="100" placeholder="book id here" name="boid" >
+        <input type="submit" padding='3x' value="ISBN number"><br><br>
+        <input type="text" size="100" placeholder=" copy number here" name="conu" >
+        <input type="submit" padding='3x' value="copy number"><br><br>
+        <input type="text" size="100" placeholder="role here" name="rol" >
+        <input type="submit" padding='3x' value="your role"><br><br>
+        
+    </form>
+<!----  </div>-->
+</div>
+
+
+{% endblock content %}

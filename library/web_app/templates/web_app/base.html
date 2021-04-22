@@ -79,16 +79,16 @@
                         <li class="dropdown"><a href="#">Books</a>
                             <div class="dropdown-content">
                                 
-                                <a href="{% url 'userdashboard' %}">Author Search</a>
-                                <a href="{% url 'category' %}">Title  Search</a>
+                                <a href="{% url 'authcategory' %}">Author Search</a>
+                                <a href="{% url 'titcategory' %}">Title  Search</a>
                                 
                             </div>
                         </li>
-                        <li><a href="{% url 'category' %}">Issued Books</a></li>
-                        <li><a href="{% url 'login' %}">Favourites</a></li>
-                        <li><a href="{% url 'signup' %}">Withdraw books</a></li>
-                        <li><a href="{% url 'checkout' %}">Fines</a></li>
-                        <li><a href="{% url 'single_book' %}">Contact</a></li>
+                        <li><a href="{% url 'issuedbooks' %}">Issued Books</a></li>
+                        <li><a href="{% url 'log' %}">Favourites</a></li>
+                        <li><a href="{% url 'hold' %}">Hold books</a></li>
+                        <li><a href="{% url 'fines' %}">Fines</a></li>
+                        <li><a href="{% url 'cont' %}">Contact</a></li>
                         <li><a href="{% url 'logout' %}">Log Out</a></li>
                     </ul>
                 </div>  
