@@ -626,7 +626,7 @@ input[type="submit"], button[type=submit] {
     text-transform: uppercase;
 }
 input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
-.single-sidebar input[type="text"] {
+.single-sidebar input[type="text"],.single-sidebar input[type="password"] {
     margin-bottom: 10px;
     width: 100%;
 }

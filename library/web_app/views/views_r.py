@@ -210,3 +210,51 @@ def checkout(request):
 
 def single_book(request):
     return render(request, 'web_app/single_book.html', {'title' : 'single_book'})
+
+
+
+def admin_login(request):
+    LibrarianID = request.session.get('LibrarianId', 'none')
+    if LibrarianID == 'none':
+        request.session.flush()
+        request.session.clear_expired()
+        data = {
+                'title' : 'login'
+        }
+
+        if request.method == "POST":
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * FROM librarians WHERE email= %s""", [email])
+            row = cursor.fetchall()
+            if cursor.rowcount == 1:
+                dbpassword = row[0][3]
+                LibrarianId = row[0][0]
+                data = {
+                'LibrarianId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'title' : 'login'
+                }
+                
+                
+                if bcrypt.checkpw(password.encode('utf8'), dbpassword.encode('utf8')):
+                    request.session['LibrarianId'] = data['LibrarianId']
+                    request.session['email'] = email
+                    url="/"
+                    # return redirect(url)
+                    return render(request, 'web_app/index.html', data)
+                
+                else:
+                    messages.error(request, 'incorrect password please try again!!')
+            else:
+                messages.error(request, 'Account does not exist with the entered credentials!!!')
+        return render(request, 'web_app/login.html', data)
+    else:
+        url="admin_home"
+        return redirect(url)
+

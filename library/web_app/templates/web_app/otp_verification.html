@@ -42,6 +42,16 @@
   </head>
   <body>
     <div class="site-branding-area">
+        {% for message in messages %}
+                            <div class="container-fluid p-0">
+                                <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{ message }}
+                                </div>
+                            </div>
+        {% endfor %}
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -50,58 +60,61 @@
                     </div>
                 </div>
                 
-                <div class="col-sm-6">
-                    <div class="shopping-item">
-                        <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key"><i class="fa fa-user"></i>{{ name }}</span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Log Out</a></li>
-                            </ul>
-                        </li>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div> <!-- End site branding area -->
     
-    <div class="mainmenu-area">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div> 
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li class="dropdown"><a href="#">Books</a>
-                            <div class="dropdown-content">
-                                
-                                <a href="{% url 'userdashboard' %}">Author Search</a>
-                                <a href="{% url 'category' %}">Title  Search</a>
-                                
-                            </div>
-                        </li>
-                        <li><a href="{% url 'category' %}">Issued Books</a></li>
-                        <li><a href="{% url 'login' %}">Favourites</a></li>
-                        <li><a href="{% url 'signup' %}">Withdraw books</a></li>
-                        <li><a href="{% url 'checkout' %}">Fines</a></li>
-                        <li><a href="{% url 'single_book' %}">Contact</a></li>
-                    </ul>
-                </div>  
+ 
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>OTP</h2>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- End mainmenu area -->
-    
-    {% block content %}
-    
-    {% endblock %}
+</div>
+
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                    <!-- <h2 class="sidebar-title">Search Products</h2> -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="single-sidebar">
+                            <input type="text" placeholder="One Time Password" name="otp" required>
+                            <!-- <input type="password" placeholder="Confirm Password" name="r_password" required> -->
+                            <div class='center'>
+
+                                <input type="submit" name="" value="Submit">
+                            </div>
+                            
+                        </div>
+                        </div>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <!-- <div class="woocommerce-info">Don't have an account? <a class="showlogin" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="login-form-wrap">Click here to create an account</a> -->
+                        </div>
+                        </div>
+                    </form>
+                    
+                                                 
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>
      
     <!-- End slider area -->
         
