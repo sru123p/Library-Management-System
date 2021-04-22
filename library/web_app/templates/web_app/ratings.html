@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     {% if title %}
@@ -16,34 +17,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static '/web_app/css/userd.css' %}" />
     <style>
-        .stars-outer {
-  position: relative;
-  display: inline-block;
-}
-
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-}
-
-.stars-outer::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  color: #ccc;
-}
-
-.stars-inner::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  color: #f8ce0b;
-}
-
+       .checked {
+  color: rgb(255, 217, 0);
+} 
     </style>
   </head>
   <body id="body">
@@ -85,24 +61,46 @@
           <!-- MAIN TITLE ENDS HERE -->
 
           <!-- MAIN CARDS STARTS HERE -->
+          <form method="POST">
+            {% csrf_token %} 
+            {% for i in books%}
           <div class="card-r">
             <div class="card-header">
               <img src="{% static '/web_app/img/logo2.jpg' %}" class="card-img-top" alt="...">
             </div>
             <div class="card-body">
-              <h5 class="card-title">Book name</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <button class="button" type="submit" form="form1" value="Submit">Submit Review</button>
-              
+              <h4 class="card-title">Book name : {{i.7}}
+              </h4>
+              <p class="card-text">How did you find this book? Publish your ratings and reviews to help out future readers !<br>
+                <br>
+                
+                <div class="form-group">
+                    <input type="number" id="rating-control" class="form-control" step="1" max="5" placeholder="Rate 1 - 5" name ="rating" >
+                </div>
+
+                <div class="stars">
+                    <h2>Star Rating</h2>
+                  <span class="fa fa-star 1"></span>
+                  <span class="fa fa-star 2"></span>
+                  <span class="fa fa-star 3"></span>
+                  <span class="fa fa-star 4"></span>
+                  <span class="fa fa-star 5"></span>
+                </div>
+          
+              </p>
+              <br>
+              <button class="button" type="submit" value="submit" id="myBtn" >Submit Review</button>
+            </form>
             </div>
-            <div class="card-footer text-muted">
-              2 days ago
-            </div>
+            
           </div>
           <br><br>
-          
-      </main>
+          {%endfor%} 
+        </main>
+        
 
+
+      <!-- sidebar -->
       <div id="sidebar">
         <div class="sidebar__title">
           <div class="sidebar__img">
@@ -124,7 +122,7 @@
           </div>
           <div class="sidebar__link">
             <i class="fa fa-users" aria-hidden="true"></i>
-            <a href="#">My Friends</a>
+            <a href="{% url 'friends' %}">My Friends</a>
           </div>
           <div class="sidebar__link">
             <i class="fa fa-comment-dots" aria-hidden="true"></i>
@@ -159,70 +157,29 @@
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
-        // Initial Ratings
-    const ratings = {
-      sony: 4.7,
-      samsung: 3.4,
-      vizio: 2.3,
-      panasonic: 3.6,
-      phillips: 4.1
-    }
+    
 
-    // Total Stars
-    const starsTotal = 5;
-
-    // Run getRatings when DOM loads
-    document.addEventListener('DOMContentLoaded', getRatings);
-
-    // Form Elements
-    const productSelect = document.getElementById('product-select');
-    const ratingControl = document.getElementById('rating-control');
-
-    // Init product
-    let product;
-
-    // Product select change
-    productSelect.addEventListener('change', (e) => {
-      product = e.target.value;
-      // Enable rating control
-      ratingControl.disabled = false;
-      ratingControl.value = ratings[product];
-    });
-
-    // Rating control change
-    ratingControl.addEventListener('blur', (e) => {
-      const rating = e.target.value;
-
-      // Make sure 5 or under
-      if (rating > 5) {
+<script>
+    // document.getElementById("myBtn").addEventListener("click", func1);
+        var num=1;
+        var x = document.querySelector(" .stars").getElementsByClassName(" fa-star");
+        const ratingControl = document.getElementById('rating-control');
+        ratingControl.addEventListener('change', (e) => {
+        const rating = e.target.value;
+        for(var i=0;i<rating;i++){
+            x[i].className += " checked";
+         }
+        for(var i=rating;i<5;i++){
+            x[i].classList.remove("checked");
+        }
+        // Make sure 5 or under
+        if (rating > 5) {
         alert('Please rate 1 - 5');
         return;
-      }
-
-      // Change rating
-      ratings[product] = rating;
-
-      getRatings();
-    });
-
-    // Get ratings
-    function getRatings() {
-      for (let rating in ratings) {
-        // Get percentage
-        const starPercentage = (ratings[rating] / starsTotal) * 100;
-
-        // Round to nearest 10
-        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-
-        // Set width of stars-inner to percentage
-        document.querySelector(`.${rating} .stars-inner`).style.width = starPercentageRounded;
-
-        // Add number rating
-        document.querySelector(`.${rating} .number-rating`).innerHTML = ratings[rating];
-      }
-    }
-    </script>
+         }
+         ratingControl.className += " num";
+         num++;
+        })
+</script>
   </body>
 </html>

@@ -18,6 +18,7 @@ urlpatterns = [
     path('admin_logout', views_s.logout_request_admin, name = 'admin_logout'),
     path('userdashboard', views_r.userdashboard, name = 'userdashboard'),
     path('ratings', views_r.ratings, name = 'ratings'),
+    path('friends', views_r.friends, name = 'friends'),
     path('signup', views_r.signup, name = 'signup'),
     path('admin_home', views_s.admin_home, name='admin_home'),
     path('categories_search', views_s.categories_search, name='categories_search'),
