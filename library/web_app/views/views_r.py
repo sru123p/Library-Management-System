@@ -480,7 +480,7 @@ def bookshelf(request):
                 }
     if userID != 'none':
         cursor = connection.cursor()
-        cursor.execute("""SELECT * FROM personal_bookshelf WHERE id_user=%s""", [userID])
+        cursor.execute("""SELECT * FROM personal_bookshelf WHERE iduser=%s""", [userID])
         book = cursor.fetchall()
     return render(request, 'web_app/bookshelf.html', {'book': book, 'title' : 'My Bookshelf', 'userId': row[0][0],'name': row[0][1]})
 
