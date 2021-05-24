@@ -456,3 +456,31 @@ def borrowed_books(request):
         books = cursor.fetchall()
     return render(request, 'web_app/borrowed_books.html', {'books': books, 'title' : 'Borrowed Books', 'userId': row[0][0],'name': row[0][1]})
 
+def bookshelf(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'My Bookshelf',
+                }
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM personal_bookshelf WHERE id_user=%s""", [userID])
+        book = cursor.fetchall()
+    return render(request, 'web_app/bookshelf.html', {'book': book, 'title' : 'My Bookshelf', 'userId': row[0][0],'name': row[0][1]})
+
