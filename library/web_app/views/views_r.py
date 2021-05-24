@@ -59,6 +59,21 @@ def logout_request(request):
     messages.info(request, "Logged out successfully!")
     return redirect("/login")
 
+def delete_account(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""DELETE FROM users WHERE userId= %s""", [userID])
+        request.session.clear()
+        request.session.flush()
+        request.session.clear_expired()
+        return redirect("/login")
+    else:
+        return redirect("/login")
 
 def resend_OTP(request):
     email = request.session.get('email')
