@@ -16,10 +16,11 @@
     {% load static %}
     <link rel="stylesheet" href="{% static '/web_app/css/userd.css' %}" />
     <style>
-    input[type=text] {
-      border: none;
-      border-bottom: 2px solid rgba(105, 105, 105, 0.822);
-    }</style>
+      input[type=number] {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.829);
+}
+    </style>
   </head>
   <body id="body">
     <div class="container">
@@ -53,7 +54,9 @@
             <img src="assets/hello.svg" alt="" />
             <div class="main__greeting">
               <h1>Hello {% if name %} {{name}} {% endif %}</h1>
-              <p>View your friendlist<br><br><br></p>
+              <p>Search the list of users and send Friend Requests to the people you know.<br>
+                You must wait for them to accept your request to be-friend them.<br><br>
+            </p>
             </div>
           </div>
 
@@ -62,25 +65,16 @@
             <tr>
               <th>User ID</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Books Borrowed </th>
+              <th>E-mail</th>
+              <th>Role</th>
             </tr>
             {% for i in friend %}
             <tr>
               <td>{{i.0}}</td>
               <td>{{i.1}}</td>
               <td>{{i.2}}</td>
-              <td>
-                {% for j in books %}
-                <ul>
-                {% if j.2 == i.0 %}
-                  <li>ISBN Number : {{j.0}}
-                     Copy Number : {{j.1}}
-                  </li>
-                {%endif%}
-                </ul>
-                {%endfor%}
-              </td>
+              <td>{{i.5}}</td>
+              
             </tr>
             {%endfor%} 
           </table>
@@ -89,9 +83,9 @@
           <br><br>
           <form method="POST">
             {% csrf_token %} 
-            <h3>View Books Borrowed by user :</h3>
-            <input type="text" padding='3x' placeholder="User Nmae" name="user1" width="2%">
-            <button class="button" type="submit" value="submit" id="myBtn" >View</button>
+            <h3>Send Friend Request to</h3>
+            <input type="number" padding='3x' placeholder="To user" name="user2" width="2%">
+            <button class="button" type="submit" value="submit" id="myBtn" >Send Request</button>
             
           </form>
           
@@ -114,11 +108,11 @@
               <h2>PERSONAL</h2>
               <div class="sidebar__link">
                 <i class="fas fa-book"></i>
-                <a href="#">My Bookshelf</a>
+                <a href="{% url 'friends' %}">My Bookshelf</a>
               </div>
               <div class="sidebar__link">
                 <i class="fa fa-users" aria-hidden="true"></i>
-                <a href="{% url 'friends' %}">My Friends</a>
+                <a href="#">My Friends</a>
               </div>
               <div class="sidebar__link">
                 <i class="fa fa-commenting" aria-hidden="true"></i>

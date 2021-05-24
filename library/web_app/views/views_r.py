@@ -250,7 +250,7 @@ def userdashboard(request):
                 'password': row[0][3],
                 'address': row[0][4],
                 'role':row[0][5],
-                'title' : 'Dashboard',
+                'title' : 'userdashboard',
                 }
     return render(request, 'web_app/userdashboard.html', data)
 
@@ -279,23 +279,165 @@ def ratings(request):
             cur = connection.cursor()
             cur.execute("""SELECT * FROM borrowed_books WHERE id_user= %s""", [userID])
             books = cur.fetchall()
+            cur1 = connection.cursor()
+            cur1.execute("""SELECT title, ISBNnumber, copyNo FROM books WHERE ISBNnumber in (SELECT ISBN_book FROM borrowed_books WHERE id_user= %s) and copyNo in (SELECT copy_num FROM borrowed_books WHERE id_user= %s)""", [userID,userID])
+            details = cur1.fetchall()
             if request.method == "POST":
                 rating = request.POST.get('rating')
+                review = request.POST.get('review')
                 cursor1 = connection.cursor()
                 book_ID = books[0][0]
-                cursor1.execute("""SELECT * FROM ratings WHERE user_ID = %s AND book_ID= %s""",[userID,book_ID])
+                cursor1.execute("""SELECT * FROM ratings_reviews WHERE user_ID = %s AND book_ID= %s""",[userID,book_ID])
                 if cursor1.rowcount ==0:
-                    cursor1.execute("""INSERT INTO ratings(user_ID,book_ID,rating) VALUES (%s, %s, %s)""",[userIDbook_ID,rating])
+                    cursor1.execute("""INSERT INTO ratings_reviews(user_ID,book_ID,rating,review) VALUES (%s, %s, %s,%s)""",[userID,book_ID,rating,review])
                 else:
-                    cursor1.execute("""UPDATE ratings SET rating = %s  WHEREuser_ID = %s AND book_ID= %d""",[rating,userID,book_ID])
-    return render(request, 'web_app/ratings.html',{'books' : books, 'title' : 'Ratings','userId': row[0][0],'name': row[0][1]})
+                    cursor1.execute("""UPDATE ratings SET rating = %s, review =%s WHERE user_ID = %s AND book_ID= %d""",[rating,review,userID,book_ID])
+    return render(request, 'web_app/ratings.html',{'books' : books, 'details' : details, 'title' : 'Ratings','userId': row[0][0],'name': row[0][1]})
 
 def friends(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
     userID = request.session.get('userId', 'none')
     if userID != 'none':
         cursor = connection.cursor()
-        cursor.execute("""SELECT name2,accepted FROM friends WHERE f1ID= %s""", [userID])
-        friend = cursor.fetchall()
-    return render(request, 'web_app/friends.html', {'friend': friend, 'title' : 'myfriends'})
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'My Friends',
+                }
+    userID = request.session.get('userId', 'none')
+    if request.method == "POST":
+        user1 = request.POST.get('user1')
+        cursor1 = connection.cursor()
+        cursor1.execute("""SELECT * FROM borrowed_books WHERE id_user=%s""",[user1])
+        books=cursor1.fetchall()
+        if userID != 'none':
+            cur2 = connection.cursor()
+            cur2.execute("""SELECT * FROM users WHERE userID in (SELECT f2ID from friends WHERE f1ID= %s)""", [userID])
+            friend=cur2.fetchall()
+            return render(request, 'web_app/friends.html', {'friend': friend, 'books' : books, 'title' : 'My Friends', 'userId': row[0][0],'name': row[0][1]})  
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userID in (SELECT f2ID from friends WHERE f1ID= %s)""", [userID])
+        friend = cursor.fetchall()  
+        return render(request, 'web_app/friends.html', {'friend': friend, 'title' : 'My Friends', 'userId': row[0][0],'name': row[0][1]})
 
+def find_friends(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'Find others',
+                }
+    userID = request.session.get('userId', 'none')
+    if request.method == "POST":
+        user2 = request.POST.get('user2')
+        cursor1 = connection.cursor()
+        cursor1.execute("""INSERT INTO temp_request(user1ID, user2ID) values (%s,%s)""",[userID,user2])
+        if userID != 'none':
+            cur = connection.cursor()
+            cur.execute("""SELECT * FROM users WHERE userID <> %s""", [userID])
+            friend = cur.fetchall()
+            return render(request, 'web_app/find_friends.html', {'friend': friend, 'title' : 'Find Others', 'userId': row[0][0],'name': row[0][1]})
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userID <> %s""", [userID])
+        friend = cursor.fetchall()
+    return render(request, 'web_app/find_friends.html', {'friend': friend, 'title' : 'Find Others', 'userId': row[0][0],'name': row[0][1]})
+
+def pending(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'Pending Requests',
+                }
+    userID = request.session.get('userId', 'none')
+    if request.method == "POST":
+        user1 = request.POST.get('user1')
+        cursor1 = connection.cursor()
+        cursor1.execute("""INSERT INTO friends(f1ID, f2ID) values (%s,%s)""",[userID,user1])
+        cur1 = connection.cursor()
+        cur1.execute("""DELETE FROM temp_request WHERE user2ID=%s AND user1ID=%s""",[userID,user1])
+        if userID != 'none':
+            cur2 = connection.cursor()
+            cur2.execute("""SELECT * FROM users WHERE userID in (SELECT user1ID FROM temp_request WHERE user2ID=%s)""", [userID])
+            friend=cur2.fetchall()
+            return render(request, 'web_app/pending.html', {'friend': friend, 'title' : 'Pending Requests', 'userId': row[0][0],'name': row[0][1]})
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userID in (SELECT user1ID FROM temp_request WHERE user2ID=%s)""", [userID])
+        friend = cursor.fetchall()
+    return render(request, 'web_app/pending.html', {'friend': friend, 'title' : 'Pending Requests', 'userId': row[0][0],'name': row[0][1]})
+
+def borrowed_books(request):
+    if request.session.get('loggedinLib', False) == True:
+        return redirect('/admin_home')
+    if request.session.get('loggedinUser', False) == False:
+        return redirect("login")
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'Borrowed Books',
+                }
+    userID = request.session.get('userId', 'none')
+    
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM borrowed_books WHERE id_user=%s""", [userID])
+        books = cursor.fetchall()
+    return render(request, 'web_app/borrowed_books.html', {'books': books, 'title' : 'Borrowed Books', 'userId': row[0][0],'name': row[0][1]})
 
