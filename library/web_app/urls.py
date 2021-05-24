@@ -21,6 +21,7 @@ urlpatterns = [
     path('friends', views_r.friends, name = 'friends'),
     path('borrowed_books', views_r.borrowed_books, name = 'borrowed_books'),
     path('pending', views_r.pending, name = 'pending'),
+    path('bookshelf', views_r.bookshelf, name = 'bookshelf'),
     path('find_friends', views_r.find_friends, name = 'find_friends'),
     path('delete_account', views_r.delete_account, name = 'delete_account'),
     path('signup', views_r.signup, name = 'signup'),

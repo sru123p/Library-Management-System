@@ -110,6 +110,33 @@ def single_book(request):
     data = {
         'name': request.session.get('name', 'Guest'),
     }
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'My Bookshelf',
+                }
+    if request.method == "POST":
+        ISBN = request.POST.get('ISBN')
+        cursor1 = connection.cursor()
+        cursor1.execute("""INSERT INTO personal_bookshelf(iduser, ISBNbook) values (%s,%s)""",[userID,ISBN])
+        if userID != 'none':
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * FROM personal_bookshelf WHERE iduser = %s""",[userID])
+            book = cursor.fetchall()
+            return render(request, 'web_app/bookshelf.html', {'book': book, 'title' : 'My Bookshelf', 'userId': row[0][0],'name': row[0][1]})
+
     if request.method=='GET':
         value = request.GET["bookauth"]
         cursor = connection.cursor()
@@ -186,6 +213,33 @@ def single_bookm(request):
     data = {
         'name': request.session.get('name', 'Guest'),
     }
+    userID = request.session.get('userId', 'none')
+    if userID != 'none':
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM users WHERE userId= %s""", [userID])
+        row = cursor.fetchall()
+        if cursor.rowcount == 1:
+            dbpassword = row[0][3]
+            userId = row[0][0]
+            data = {
+                'userId': row[0][0],
+                'name': row[0][1],
+                'email': row[0][2],
+                'password': row[0][3],
+                'address': row[0][4],
+                'role':row[0][5],
+                'title' : 'My Bookshelf',
+                }
+    if request.method == "POST":
+        ISBN = request.POST.get('ISBN')
+        cursor1 = connection.cursor()
+        cursor1.execute("""INSERT INTO personal_bookshelf(iduser, ISBNbook) values (%s,%s)""",[userID,ISBN])
+        if userID != 'none':
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * FROM personal_bookshelf WHERE iduser = %s""",[userID])
+            book = cursor.fetchall()
+            return render(request, 'web_app/bookshelf.html', {'book': book, 'title' : 'My Bookshelf', 'userId': row[0][0],'name': row[0][1]})
+
     return render(request,'web_app/single_bookm.html', data)
 
 def isslist(request):

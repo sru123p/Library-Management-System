@@ -47,7 +47,14 @@
                                     <h4>this is a very standard book and this book is very useful to gain knowledge about mathematics</h4>
                                     <form action="favorites">
                                         <button class="add_to_cart_button" type="submit">Add to favorites</button>
-                                    </form>       
+                                    </form>  
+                                    <form method="POST">
+                                        {% csrf_token %} 
+                                        <h3>Do you wish to add this book to your bookshelf for borrowing later? </h3>
+                                        <input type="number" padding='3x' placeholder="ISBN Number" name="ISBN" width="2%">
+                                        <button class="button" type="submit" value="submit" id="myBtn" >Add to my Bookshelf</button>
+            
+                                    </form>        
                                 </div>
                             </div>
                         </div>                
