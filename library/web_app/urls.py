@@ -22,6 +22,7 @@ urlpatterns = [
     path('borrowed_books', views_r.borrowed_books, name = 'borrowed_books'),
     path('pending', views_r.pending, name = 'pending'),
     path('find_friends', views_r.find_friends, name = 'find_friends'),
+    path('delete_account', views_r.delete_account, name = 'delete_account'),
     path('signup', views_r.signup, name = 'signup'),
     path('admin_home', views_s.admin_home, name='admin_home'),
     path('categories_search', views_s.categories_search, name='categories_search'),
