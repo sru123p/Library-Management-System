@@ -16,10 +16,11 @@
     {% load static %}
     <link rel="stylesheet" href="{% static '/web_app/css/userd.css' %}" />
     <style>
-    input[type=text] {
-      border: none;
-      border-bottom: 2px solid rgba(105, 105, 105, 0.822);
-    }</style>
+      input[type=number] {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.829);
+}
+    </style>
   </head>
   <body id="body">
     <div class="container">
@@ -53,7 +54,10 @@
             <img src="assets/hello.svg" alt="" />
             <div class="main__greeting">
               <h1>Hello {% if name %} {{name}} {% endif %}</h1>
-              <p>View your friendlist<br><br><br></p>
+              <p>This is the list of library users that have sent you a friend request.<br>
+                Accept their request to be-friend them.<br><br>
+                Note : Your friends will be able to view your list of borrowed books.<br><br>
+            </p>
             </div>
           </div>
 
@@ -62,25 +66,16 @@
             <tr>
               <th>User ID</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Books Borrowed </th>
+              <th>E-mail</th>
+              <th>Role</th>
             </tr>
             {% for i in friend %}
             <tr>
               <td>{{i.0}}</td>
               <td>{{i.1}}</td>
               <td>{{i.2}}</td>
-              <td>
-                {% for j in books %}
-                <ul>
-                {% if j.2 == i.0 %}
-                  <li>ISBN Number : {{j.0}}
-                     Copy Number : {{j.1}}
-                  </li>
-                {%endif%}
-                </ul>
-                {%endfor%}
-              </td>
+              <td>{{i.5}}</td>
+              
             </tr>
             {%endfor%} 
           </table>
@@ -89,9 +84,9 @@
           <br><br>
           <form method="POST">
             {% csrf_token %} 
-            <h3>View Books Borrowed by user :</h3>
-            <input type="text" padding='3x' placeholder="User Nmae" name="user1" width="2%">
-            <button class="button" type="submit" value="submit" id="myBtn" >View</button>
+            <h3>Accept Friend Request of </h3>
+            <input type="number" padding='3x' placeholder="Of user" name="user1" width="2%">
+            <button class="button" type="submit" value="submit" id="myBtn" >Accept</button>
             
           </form>
           

@@ -20,6 +20,22 @@
        .checked {
   color: rgb(255, 217, 0);
 } 
+input[type=text] {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.822);
+}
+input[type=number] {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.829);
+}
+input[type=text]:focus {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.822);
+}
+input[type=number]:focus {
+  border: none;
+  border-bottom: 2px solid rgba(105, 105, 105, 0.822);
+}
     </style>
   </head>
   <body id="body">
@@ -64,37 +80,42 @@
           <form method="POST">
             {% csrf_token %} 
             {% for i in books%}
+            {% for d in details%}
+            {% if i.0 == d.1 and i.1 == d.2 %}
           <div class="card-r">
             <div class="card-header">
               <img src="{% static '/web_app/img/logo2.jpg' %}" class="card-img-top" alt="...">
             </div>
             <div class="card-body">
-              <h4 class="card-title">Book name : {{i.7}}
+              <h4 class="card-title">Book name : {{d.0}}
               </h4>
               <p class="card-text">How did you find this book? Publish your ratings and reviews to help out future readers !<br>
                 <br>
-                
+                </p>
                 <div class="form-group">
-                    <input type="number" id="rating-control" class="form-control" step="1" max="5" placeholder="Rate 1 - 5" name ="rating" >
-                </div>
+                  <input type="number" id="rating-control" class="form-control" step="1" max="5" placeholder="Rate 1 - 5" name ="rating" >
+              </div>
 
-                <div class="stars">
-                    <h2>Star Rating</h2>
-                  <span class="fa fa-star 1"></span>
-                  <span class="fa fa-star 2"></span>
-                  <span class="fa fa-star 3"></span>
-                  <span class="fa fa-star 4"></span>
-                  <span class="fa fa-star 5"></span>
-                </div>
-          
-              </p>
+              <div class="stars">
+                  <h2>Star Rating</h2>
+                <span class="fa fa-star 1"></span>
+                <span class="fa fa-star 2"></span>
+                <span class="fa fa-star 3"></span>
+                <span class="fa fa-star 4"></span>
+                <span class="fa fa-star 5"></span>
+              </div>
               <br>
+              <div class="form-group">
+                <input type="text" id="review" class="review" placeholder="Review" name ="review" >
+            </div>
+            <br>
               <button class="button" type="submit" value="submit" id="myBtn" >Submit Review</button>
-            </form>
             </div>
             
           </div>
           <br><br>
+          {% endif %}
+          {%endfor%} 
           {%endfor%} 
         </main>
         
@@ -125,13 +146,17 @@
             <a href="{% url 'friends' %}">My Friends</a>
           </div>
           <div class="sidebar__link">
-            <i class="fa fa-comment-dots" aria-hidden="true"></i>
-            <a href="#">Pending Requests</a>
+            <i class="fa fa-commenting" aria-hidden="true"></i>
+            <a href="{% url 'pending' %}">Pending Requests</a>
+          </div>
+          <div class="sidebar__link">
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+            <a href="{% url 'find_friends' %}">Find Friends</a>
           </div>
           <h2>BOOKS</h2>
           <div class="sidebar__link">
             <i class="fas fa-star-half-alt"></i>
-            <a href="#">Rate & Review</a>
+            <a href="{% url 'ratings' %}">Rate & Review</a>
           </div>
           <div class="sidebar__link">
             <i class="fas fa-book-reader"></i>
@@ -139,7 +164,7 @@
           </div>
           <div class="sidebar__link">
             <i class="fas fa-bookmark"></i>
-            <a href="#">Borrowed Books</a>
+            <a href="{% url 'borrowed_books' %}">Borrowed Books</a>
           </div>
           <div class="sidebar__link">
             <i class="fas fa-hand-holding-usd"></i>
